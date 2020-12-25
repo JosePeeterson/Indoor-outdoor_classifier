@@ -1,0 +1,9 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://ssh-remote+peeterson01/home/peeterson/git_new_projects/dev-sarmi_tst/RL-MotionPlanning"
+		}
+	],
+	"remoteAuthority": "ssh-remote+peeterson01",
+	"settings": {}
+}

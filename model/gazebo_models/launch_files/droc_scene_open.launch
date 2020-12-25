@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="GAZEBO_WORLD_NAME" default="scene_open" />
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+  <arg name="world_name" default="$(find droc_gazebo)/world/$(arg GAZEBO_WORLD_NAME).world" />
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0"/>
+  <arg name="yaw" default="0"/>
+  <arg name="use_fake_localization" default="true"/>
+  <arg name="publish_tf" default="$(optenv GAZEBO_PUBLISH_TF 1)"/>
+  
+
+  <!-- Launch Gazebo with the specified world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="0" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="headless" value="$(arg headless)" />
+    <arg name="world_name" value="$(arg world_name)" />
+  </include>
+
+  <!-- Load droc's description, controllers, and teleop nodes. -->
+  <include file="$(find droc_description)/launch/description.launch">
+  </include>
+  <include file="$(find droc_control)/launch/control.launch" />
+  <include file="$(find droc_control)/launch/teleop.launch">
+    <arg name="joystick" value="false"/>
+  </include>
+
+  <!-- Spawn droc -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model droc -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw) -P $(arg pitch) -R $(arg roll)" />
+	      
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find droc_gazebo)/rviz/droc_move_base.rviz" if="$(arg gui)"/>
+
+  <include file="$(find fake_localization)/launch/gazebo_fake_localization.launch" if="$(arg use_fake_localization)">
+    <arg name="base_frame_ns" default="droc"/>
+    <arg name="base_frame_id" default="base_link"/>
+    <arg name="odom_frame_id" default="odom"/>
+    <arg name="fixed_frame_id" default="map"/>
+    <arg name="publish_tf" default="$(arg publish_tf)"/>
+  </include>
+  
+  
+  <arg name="cloud_in" default="/rslidar_points"/>
+ 
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
+      <remap from="cloud_in" to="$(arg cloud_in)"/>
+      <rosparam>                                                                                                                                           
+          target_frame: base_link                                                                                                                          
+          tolerance: 1.0                                                                                                                                   
+          min_height: 0.05                                                                                                                                 
+          max_height: 0.75                                                                                                                                 
+          angle_min: -1.57079632679                                                                                                                             
+          angle_max: 1.57079632679                                                                                                                                
+          angle_increment: 0.00613592315                                                                                                                         
+          scan_time: 0.1                                                                                                                                   
+          range_min: 0.2                                                                                                                                   
+          range_max: 6.0                                                                                                                                 
+          use_inf: true                                                                                                                                    
+          concurrency_level: 1                                                                                                                             
+      </rosparam>
+  </node>
+
+</launch>

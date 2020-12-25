@@ -1,0 +1,10 @@
+scene:
+    type: Towards
+    use_static_obstacles: True
+    reverse_collision: False
+    restart_episode: True
+    dual_direction: True
+    num_dynamic: 2
+    num_box: 1
+    collision_radius: 0.8
+    scene_list: ['Perpendicular', 'Towards', 'Parallel', 'Circular']

@@ -1,0 +1,314 @@
+show_clock 0
+show_clock_interval 10000
+resolution 0.1
+threads 16
+speedup 1.000
+
+define sicklaser ranger
+(
+  sensor(
+    pose [ 0.205 0 0.1 0 ]
+    fov 180
+    range [ 0.2 6.0 ]
+    samples 512
+  )
+  color "random"
+  block( 
+    points 4
+    point[0] [0 0]
+    point[1] [0 1]
+    point[2] [1 1]
+    point[3] [1 0]
+    z [0 0.21]
+  )
+)
+
+
+define floorplan model
+(
+  color "gray30"
+  boundary 1
+
+  gui_nose 0
+  gui_grid 0
+  gui_move 1
+  gui_outline 0
+  gripper_return 0
+  fiducial_return 0
+  ranger_return 1.000
+  obstacle_return 1
+)
+
+floorplan
+(
+  name "blank"
+  size [60.000 60.000 1.800]
+  pose [0.000 0.000 0.000 0.000]
+  bitmap "testenv.png"
+)
+
+
+
+window
+(
+  size [800 800]
+  
+# Camera options 
+  scale 10.000          
+  center [0.000  0.000]
+  rotate [ 0.000  0.000 ]
+
+
+# GUI options
+  show_data 0
+  show_flags 1
+  show_blocks 1
+  show_clock 1
+  show_footprints 0
+  show_grid 1
+  show_trailarrows 0
+  show_trailrise 0
+  show_trailfast 0
+  show_occupancy 0
+
+)
+
+
+
+
+define agent position
+(
+  # actual size
+  size [0.640 0.510 0.640] # sizes from MobileRobots' web site
+
+  # the pioneer's center of rotation is offset from its center of area
+  origin [0.000 0.000 0.000 0.000]
+
+  # draw a nose on the robot so we can see which way it points
+  gui_nose 1
+
+  color "random"
+  drive "diff"		 	# Differential steering model.
+  obstacle_return 1           	# Can hit things.
+  ranger_return 0.500            	# reflects sonar beams
+  blob_return 1               	# Seen by blobfinders  
+  fiducial_return 1           	# Seen as "1" fiducial finders
+  sicklaser(
+	pose [ 0.000 0.000 0.000 0.000 ]
+  )
+  
+  # [ xmin xmax ymin ymax zmin zmax amin amax ]				
+  velocity_bounds [0 1.0 0 0 0 0 -90 90.0 ]					
+  acceleration_bounds [-20 20 0 0 0 0 -90 90.0 ]
+  )
+
+define obstacle position
+(
+  color "random"
+  ranger_return 1.000
+  obstacle_return 1
+
+)
+
+agent( pose [-10.983 17.932 0.000 165.211])
+agent( pose [-9.780 14.513 0.000 178.824])
+agent( pose [-27.306 16.750 0.000 16.303])
+agent( pose [-27.523 14.551 0.000 14.699])
+agent( pose [-18.977 26.145 0.000 -79.949])
+agent( pose [-18.253 5.969 0.000 71.238])
+
+agent( pose [-3.211 24.508 0.000 -83.368])
+agent( pose [0.204 23.854 0.000 -93.076])
+agent( pose [5.150 23.770 0.000 -80.321])
+agent( pose [7.742 24.410 0.000 -109.881])
+
+agent( pose [14.918 5.939 0.000 87.608])
+agent( pose [18.045 5.671 0.000 93.343])
+agent( pose [21.484 6.061 0.000 101.866])
+agent( pose [23.389 5.619 0.000 93.238])
+agent( pose [27.095 6.028 0.000 85.774])
+
+agent( pose [-3.367 -4.045 0.000 -10.056])
+agent( pose [-0.503 -3.154 0.000 -22.094])
+agent( pose [5.614 -3.790 0.000 -170.670])
+agent( pose [7.541 -4.421 0.000 163.785])
+
+agent( pose [-4.278 -28.400 0.000 104.663])
+agent( pose [-1.080 -27.995 0.000 107.944])
+agent( pose [2.660 -28.160 0.000 67.875])
+agent( pose [4.973 -28.329 0.000 77.307])
+agent( pose [7.701 -27.781 0.000 92.384])
+
+
+agent( pose [-9.000 -15.000 0.000 161.443])
+agent( pose [-10.725 -9.705 0.000 -134.984])
+agent( pose [-15.225 -6.435 0.000 -107.823])
+agent( pose [-20.775 -6.435 0.000 -63.229])
+agent( pose [-25.275 -9.705 0.000 -43.564])
+agent( pose [-27.000 -15.000 0.000 -17.116])
+agent( pose [-25.275 -20.295 0.000 32.810])
+agent( pose [-20.775 -23.565 0.000 51.204])
+agent( pose [-15.225 -23.565 0.000 96.372])
+agent( pose [-10.725 -20.295 0.000 126.980])
+
+
+agent( pose [28.225 -19.579 0.000 108.634])
+agent( pose [28.023 -20.696 0.000 95.482])
+agent( pose [26.764 -23.313 0.000 46.409])
+agent( pose [14.674 -4.438 0.000 89.909])
+agent( pose [27.286 -19.697 0.000 143.503])
+
+agent( pose [14.499 -1.534 0.000 -154.457])
+agent( pose [25.055 -22.279 0.000 -90.131])
+agent( pose [27.964 -23.466 0.000 45.502])
+agent( pose [17.607 -7.002 0.000 27.307])
+agent( pose [23.934 -28.053 0.000 -33.285])
+
+
+
+obstacle( 
+  #pose [12 -9 0.00 0]
+  pose [18.000 -13.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block(
+    points 6
+    point[5] [0 0]
+    point[4] [0 1]
+    point[3] [0.75 1]
+    point[2] [1 0.75]
+    point[1] [1 0.25]
+    point[0] [0.75 0]
+    z [0 1]
+   )
+)
+
+obstacle( 
+  #pose [16 -7 0.00 0]
+  pose [24.000 -10.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block(
+    points 16
+    point[0] [ 0.225 0.000 ]
+    point[1] [ 0.208 0.086 ]
+    point[2] [ 0.159 0.159 ]
+    point[3] [ 0.086 0.208 ]
+    point[4] [ 0.000 0.225 ]
+    point[5] [ -0.086 0.208 ]
+    point[6] [ -0.159 0.159 ]
+    point[7] [ -0.208 0.086 ]
+    point[8] [ -0.225 0.000 ]
+    point[9] [ -0.208 -0.086 ]
+    point[10] [ -0.159 -0.159 ]
+    point[11] [ -0.086 -0.208 ]
+    point[12] [ -0.000 -0.225 ]
+    point[13] [ 0.086 -0.208 ]
+    point[14] [ 0.159 -0.159 ]
+    point[15] [ 0.208 -0.086 ]
+    z [0 0.1]
+  )
+)
+
+
+
+obstacle( 
+  #pose [17 -9 0.00 0]
+  pose [25.500 -13.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block(
+    points 4
+    point[0] [ -0.02 -0.077 ]
+    point[1] [  0.078 -0.077 ]
+    point[2] [  0.078  0.077 ]
+    point[3] [ -0.02  0.077 ]
+    z [0 0.02 ]
+  )
+)
+
+obstacle( 
+  #pose [14 -11 0.00 0]
+  pose [21.000 -16.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 6
+               point[0] [-3 -1.5 ]
+               point[1] [-3 0.5 ]
+               point[2] [-2 1.5 ]
+               point[3] [+2 1.5 ]
+               point[4] [+3 0.5 ]
+               point[5] [+3 -1.5 ]
+               z [0 0.05]
+  )
+)
+
+obstacle( 
+  #pose [10 -10 0.00 0]
+  pose [15.000 -15.000 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 6
+               point[0] [-3 -1.5 ]
+               point[1] [-3 0.5 ]
+               point[2] [-2 1.5 ]
+               point[3] [+2 0.7 ]
+               point[4] [+3 0.5 ]
+               point[5] [+3 0 ]
+               z [0 0.05]
+  )
+)
+
+obstacle( 
+  #pose [13 -7 0.00 0]
+  pose [19.500 -10.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 6
+               point[0] [0 -1.5 ]
+               point[1] [0 0.5 ]
+               point[2] [0.5 -0.5 ]
+               point[3] [1 0.4 ]
+               point[4] [2 -0.5 ]
+               point[5] [0.5 -1 ]
+               z [0 0.05]
+  )
+)
+obstacle( 
+  #pose [10 -7 0.00 0]
+  pose [15.000 -10.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 5
+               point[0] [0 0 ]
+               point[1] [0.3 0.5 ]
+               point[2] [0 1 ]
+               point[3] [0.4 0.7]
+               point[4] [0.8 1.2 ]
+               point[5] [0.5 0]
+               z [0 0.05]
+  )
+)
+
+obstacle( 
+  #pose [18 -11 0.00 0]
+  pose [27.000 -16.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 6
+               point[0] [-3 -1.5 ]
+               point[1] [-3 0.5 ]
+               point[2] [-2 1.5 ]
+               point[3] [+2 0.7 ]
+               point[4] [+3 0.5 ]
+               point[5] [+3 0 ]
+               z [0 0.05]
+  )
+)
+
+obstacle( 
+  #pose [15 -9 0.00 0]
+  pose [22.500 -10.500 0.000 0.000]
+  size [0.700 0.700 0.800]  
+  block( points 6
+               point[0] [0 -1.5 ]
+               point[1] [0 0.5 ]
+               point[2] [0.5 -0.5 ]
+               point[3] [1 0.4 ]
+               point[4] [2 -0.5 ]
+               point[5] [0.5 -1 ]
+               z [0 0.05]
+  )
+)

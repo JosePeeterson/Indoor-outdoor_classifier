@@ -1,0 +1,77 @@
+base:
+    policy_folder: 'policies'        # Setup: Policy dir for load/save
+    model_save_interval: 100         # Setup: Saves model per specified interval
+    resume_point: 0                  # Setup: Resume training from specified model iteration
+    OBS_SIZE: 512                    # Robot: No of beams per laser scan
+    LASER_HIST: 3                    # Robot: No of stacked observations
+    MAX_SPEED: 1.0                   # Robot: Sets max speed of agents
+    LEARNING_RATE: 5e-5              # Training: Neural Network learning rate
+    HORIZON: 128                     # Training: Horizon for Training
+    GAMMA: 0.99                      # Training: Reward decay
+    LAMDA: 0.95                      # Training: PPO smoothing 
+    COEFF_ENTROPY: 5e-4              # Training: PPO entropy scale
+    CLIP_VALUE: 0.1                  # Training: PPO clip value   
+    network_type: 'cnn'              # Training: Network type ['cnn', 'lstm', 'mlp']        
+    reset_flag: True                 # Env: Disable agent to resume upon reaching goal
+    invisible_flag: False            # Env: Enable non reactive agents in invisible.world
+
+    # Advanced Options
+    USE_REGION_REWARD: False         # Enables region based reward instead of stepwise rewards
+    USE_SOFTPLUS: False              # Enables softplus + non-shared actor std
+    USE_RND: False                   # Enables Random Network Distillation
+    RND_LEARNING_RATE: 1e-3          # Requires RND
+    RND_IGNORE_STEP: 50              # Requires RND
+    RND_REWARD_SCALE: 1e-3           # Requires RND
+    RND_MAX_REW: 0.1                 # Requires RND
+    lstm_use_cnn: True               # Requires LSTM. Enables CNN instead of MLP per time step
+    lstm_use_noisynet: False         # Requires LSTM. Enables Noisy Net
+
+    # Hybrid Settings
+    USE_HYBRID: False   # Enable hybrid system
+    HYBRID_MODE: 'Control' # 'TEB' for TEB, 'Control' for a simple control method
+    STUCK_THRES: 10     # If the agent is not moving for x steps, set as struck
+    CRITICAL_THRES: -0.4  # If the agent is x away from obstacles, set as critical
+    # -0.4 is better for Control and -0.3 better for TEB
+    GOAL_DIST: 2        # Check if the agent is close to goal
+    EVASION_SPEED: 0.3  # The speed the agent used to evade
+    STUCK_DIST: 0.1     # Distance threshold to eval if the agent is stuck
+
+# Leave preload_filepath empty to disable preload model
+
+stage1:    #multi agent
+    preload_filepath: 'Stage1h_10000'
+    model_suffix: 'a'
+    BATCH_SIZE: 1024
+    EPOCH: 2
+    TIMEOUT: 300
+    reward_dist_scale: 1.25
+    NUM_ENV: 10
+    MAX_EPISODES: 10000
+    stats_print_interval: 100
+
+stage2: # multi agent with group terminal
+    preload_filepath: 'Stage1h_10000'
+    model_suffix: 'a'
+    BATCH_SIZE: 512
+    EPOCH: 4
+    TIMEOUT: 300
+    reward_dist_scale: 1
+    NUM_ENV: 44
+    MAX_EPISODES: 10000
+    stats_print_interval: 100
+
+single: #single agent
+    preload_filepath: 'corridor_narrow_00500' #Stage1h_10000
+    model_suffix: 'a'
+    BATCH_SIZE: 512
+    EPOCH: 4
+    TIMEOUT: 300
+    reward_dist_scale: 1.25
+    NUM_ENV: 1
+    MAX_EPISODES: 2
+    stats_print_interval: 20
+    stageros: True #only for single world
+    robot: 'droc'
+    config_folder: './configs/debug/' #only for single+config_mode
+    BASE_PORT_ID: 11312 # for parallel experiments
+    PORT_ID_OFFSET: 100

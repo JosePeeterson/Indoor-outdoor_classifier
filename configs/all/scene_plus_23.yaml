@@ -1,0 +1,13 @@
+scene:
+  world: plus-corridor
+  goal_direction: straight
+  type: Static
+  use_static_obstacles: True
+  dual_direction: False
+  num_dynamic: 2
+  num_box: 3
+  reverse_collision: True
+  restart_episode: True
+  scene_list: ['Perpendicular', 'Towards', 'Parallel', 'Circular']
+  world_list: ['l-corridor', 'corridor', 'open', 'plus-corridor']
+  goal_dir_list: ['adjacent', 'straight']

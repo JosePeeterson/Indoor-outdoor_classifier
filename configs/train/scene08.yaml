@@ -1,0 +1,10 @@
+scene:
+    type: Perpendicular    
+    use_static_obstacles: False
+    dual_direction: False
+    num_dynamic: 2    
+    num_box: 4
+    reverse_collision: False
+    restart_episode: True
+    collision_radius: 0.8
+    scene_list: ['Perpendicular', 'Towards', 'Parallel', 'Circular']

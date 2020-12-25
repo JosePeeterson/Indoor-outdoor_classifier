@@ -1,0 +1,2 @@
+obstacle_detector:stage_ros-add_pose_and_crash
+-DCATKIN_DEVEL_PREFIX=/home/peeterson/git_new_projects/dev-sarmi_tst/RL-MotionPlanning/catkin_ws_temp/devel -DCMAKE_INSTALL_PREFIX=/home/peeterson/git_new_projects/dev-sarmi_tst/RL-MotionPlanning/catkin_ws_temp/install -G Unix Makefiles
